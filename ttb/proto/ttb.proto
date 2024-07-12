@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package ttb;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/vyank/train-ticket-app/ttb/proto";
+
+
+message UserRequest {
+    string first_name = 1;
+    string last_name = 2;
+    string email = 3;
+}
+
+message UserId {
+    int32 id = 1;
+}
+
+message TicketPurchaseRequest {
+    string from = 1;
+    string to = 2;
+    int32 user_id = 3;
+    int32 price = 4;
+}
+
+message TicketPurchaseResponse {
+    int32 id = 1;
+    string section = 2;
+    int32 seat_num = 3;
+}
+
+message TicketDetailsResponse {
+    int32 id = 1;
+    string section = 2;
+    int32 seat_num = 3;
+    string from = 4;
+    string to = 5;
+    int32 price = 6;
+    UserRequest user = 7;
+}
+
+message ModifySeatRequest {
+    int32 curr_ticket_id = 1;
+    int32 new_seat_num = 2;
+    string new_section = 3;
+    int32 user_id = 4;
+}
+
+message Section {
+    string section = 1;
+}
+
+message Seat {
+    int32 seat_num = 1;
+    UserRequest user = 2;
+    string available = 3;
+}
+
+message SeatAllocationResponse {
+    repeated Seat seats = 1;
+}
+
+service TicketBooking {
+    rpc RegisterUser(UserRequest) returns (UserId);
+    rpc PurchaseTicket(TicketPurchaseRequest) returns (TicketPurchaseResponse);
+    rpc GetTicketDetails(UserId) returns (TicketDetailsResponse);
+    rpc ViewSeatAllocation(Section) returns (SeatAllocationResponse);
+    rpc RemoveUser(UserId) returns (google.protobuf.Empty);
+    rpc ModifySeat(ModifySeatRequest) returns (TicketPurchaseResponse);
+}
+
