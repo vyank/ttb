@@ -12,6 +12,12 @@ import (
 func (*Server) GetTicketDetails(ctx context.Context, in *pb.UserId) (*pb.TicketDetailsResponse, error) {
 	log.Printf("***** get ticket details invoked with %v\n", in)
 	user := getUser(in.Id)
+	if user == nil {
+		return nil, status.Errorf(
+			codes.Internal,
+			fmt.Sprintf("Invalid user"),
+		)
+	}
 	seat := getBookedSeat(in.Id)
 	if seat == nil {
 		return nil, status.Errorf(

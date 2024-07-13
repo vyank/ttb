@@ -27,7 +27,6 @@ func main() {
 	c := pb.NewTicketBookingClient(conn)
 
 	registerUser(c)
-	// registerUser(c)
 	purchaseTicket(c)
 	ticketDetails(c)
 	viewSeatAllocation(c)
