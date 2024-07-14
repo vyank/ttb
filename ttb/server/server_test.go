@@ -11,17 +11,12 @@ import (
 )
 
 const bufSize = 1024 * 1024
-
 var lis *bufconn.Listener
-
 func init() {
-
 	userIdInc = 0
-
 	trains = []Train{
 		{ID: 1, from: "London", to: "Paris", price: 20},
 	}
-
 	seats = []Seat{
 		{ID: 1, section: "A", seatNum: 1, booked: false},
 		{ID: 2, section: "A", seatNum: 2, booked: false},
@@ -34,7 +29,6 @@ func init() {
 		{ID: 9, section: "B", seatNum: 4, booked: false},
 		{ID: 10, section: "B", seatNum: 5, booked: false},
 	}
-
 	lis = bufconn.Listen(bufSize)
 	s := grpc.NewServer()
 	pb.RegisterTicketBookingServer(s, &Server{})

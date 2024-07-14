@@ -39,11 +39,9 @@ var addr string = "0.0.0.0:50051"
 func main() {
 	//init
 	userIdInc = 0
-
 	trains = []Train{
 		{ID: 1, from: "London", to: "Paris", price: 20},
 	}
-
 	seats = []Seat{
 		{ID: 1, section: "A", seatNum: 1, booked: false},
 		{ID: 2, section: "A", seatNum: 2, booked: false},
@@ -56,24 +54,18 @@ func main() {
 		{ID: 9, section: "B", seatNum: 4, booked: false},
 		{ID: 10, section: "B", seatNum: 5, booked: false},
 	}
-
-
 	lis, err := net.Listen("tcp", addr)
 
 	if err != nil {
 		log.Fatalf("Failed to listen: %v\n", err)
 	}
-
 	defer lis.Close()
 	log.Printf("Listening at %s\n", addr)
 	opts := []grpc.ServerOption{}
-
 	s := grpc.NewServer(opts...)
 	pb.RegisterTicketBookingServer(s, &Server{})
-
 	defer s.Stop()
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("Failed to serve: %v\n", err)
 	}
-
 }

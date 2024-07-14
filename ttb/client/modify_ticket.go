@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"log"
-
 	pb "github.com/vyank/train-ticket-app/ttb/proto"
 )
 

@@ -11,11 +11,6 @@ import (
 
 func (*Server) PurchaseTicket(ctx context.Context, in *pb.TicketPurchaseRequest) (*pb.TicketPurchaseResponse, error) {
 	log.Printf("***** Purchase ticket invoked %v\n", in.UserId)
-	log.Printf("---users start-----\n")
-	for _, user := range users {
-        fmt.Printf("ID: %d, FirstName: %s, LastName: %s, Email: %s\n", user.ID, user.FirstName, user.LastName, user.Email)
-    }
-	log.Printf("---users end-----\n")
 	user := getUser(in.UserId)
 	if user == nil {
 		return nil, status.Errorf(
