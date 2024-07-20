@@ -28,6 +28,7 @@ type TicketBookingClient interface {
 	GetTicketDetails(ctx context.Context, in *UserId, opts ...grpc.CallOption) (*TicketDetailsResponse, error)
 	ViewSeatAllocation(ctx context.Context, in *Section, opts ...grpc.CallOption) (*SeatAllocationResponse, error)
 	RemoveUser(ctx context.Context, in *UserId, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	RemoveUserBySeat(ctx context.Context, in *BookedSeat, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	ModifySeat(ctx context.Context, in *ModifySeatRequest, opts ...grpc.CallOption) (*TicketPurchaseResponse, error)
 }
 
@@ -84,6 +85,15 @@ func (c *ticketBookingClient) RemoveUser(ctx context.Context, in *UserId, opts .
 	return out, nil
 }
 
+func (c *ticketBookingClient) RemoveUserBySeat(ctx context.Context, in *BookedSeat, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/ttb.TicketBooking/RemoveUserBySeat", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *ticketBookingClient) ModifySeat(ctx context.Context, in *ModifySeatRequest, opts ...grpc.CallOption) (*TicketPurchaseResponse, error) {
 	out := new(TicketPurchaseResponse)
 	err := c.cc.Invoke(ctx, "/ttb.TicketBooking/ModifySeat", in, out, opts...)
@@ -102,6 +112,7 @@ type TicketBookingServer interface {
 	GetTicketDetails(context.Context, *UserId) (*TicketDetailsResponse, error)
 	ViewSeatAllocation(context.Context, *Section) (*SeatAllocationResponse, error)
 	RemoveUser(context.Context, *UserId) (*emptypb.Empty, error)
+	RemoveUserBySeat(context.Context, *BookedSeat) (*emptypb.Empty, error)
 	ModifySeat(context.Context, *ModifySeatRequest) (*TicketPurchaseResponse, error)
 	mustEmbedUnimplementedTicketBookingServer()
 }
@@ -124,6 +135,9 @@ func (UnimplementedTicketBookingServer) ViewSeatAllocation(context.Context, *Sec
 }
 func (UnimplementedTicketBookingServer) RemoveUser(context.Context, *UserId) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveUser not implemented")
+}
+func (UnimplementedTicketBookingServer) RemoveUserBySeat(context.Context, *BookedSeat) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveUserBySeat not implemented")
 }
 func (UnimplementedTicketBookingServer) ModifySeat(context.Context, *ModifySeatRequest) (*TicketPurchaseResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ModifySeat not implemented")
@@ -231,6 +245,24 @@ func _TicketBooking_RemoveUser_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TicketBooking_RemoveUserBySeat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BookedSeat)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TicketBookingServer).RemoveUserBySeat(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ttb.TicketBooking/RemoveUserBySeat",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TicketBookingServer).RemoveUserBySeat(ctx, req.(*BookedSeat))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _TicketBooking_ModifySeat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ModifySeatRequest)
 	if err := dec(in); err != nil {
@@ -275,6 +307,10 @@ var TicketBooking_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RemoveUser",
 			Handler:    _TicketBooking_RemoveUser_Handler,
+		},
+		{
+			MethodName: "RemoveUserBySeat",
+			Handler:    _TicketBooking_RemoveUserBySeat_Handler,
 		},
 		{
 			MethodName: "ModifySeat",

@@ -21,8 +21,9 @@ func main() {
 	c := pb.NewTicketBookingClient(conn)
 	registerUser(c)
 	purchaseTicket(c)
-	ticketDetails(c)
-	viewSeatAllocation(c)
-	modifyTicket(c)
-	removeUser(c)
+	ticketDetails(c)// section A: seat 1
+	// viewSeatAllocation(c)
+	// modifyTicket(c)
+	// removeUser(c)
+	removeUserBySeat(c)
 }

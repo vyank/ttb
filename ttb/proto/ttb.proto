@@ -21,6 +21,7 @@ message TicketPurchaseRequest {
     string to = 2;
     int32 user_id = 3;
     int32 price = 4;
+    string discout_code = 5;
 }
 
 message TicketPurchaseResponse {
@@ -56,6 +57,11 @@ message Seat {
     string available = 3;
 }
 
+message BookedSeat {
+    int32 seat_num = 1;
+    string section = 2;
+}
+
 message SeatAllocationResponse {
     repeated Seat seats = 1;
 }
@@ -66,6 +72,7 @@ service TicketBooking {
     rpc GetTicketDetails(UserId) returns (TicketDetailsResponse);
     rpc ViewSeatAllocation(Section) returns (SeatAllocationResponse);
     rpc RemoveUser(UserId) returns (google.protobuf.Empty);
+    rpc RemoveUserBySeat(BookedSeat) returns (google.protobuf.Empty);
     rpc ModifySeat(ModifySeatRequest) returns (TicketPurchaseResponse);
 }
 

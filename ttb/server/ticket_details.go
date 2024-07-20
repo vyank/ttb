@@ -37,7 +37,7 @@ func (*Server) GetTicketDetails(ctx context.Context, in *pb.UserId) (*pb.TicketD
 		SeatNum: seat.seatNum,
 		From: trains[0].from,
 		To: trains[0].to,
-		Price: trains[0].price,
+		Price: seat.price,
 		User: userResp,
 	}, nil
 }

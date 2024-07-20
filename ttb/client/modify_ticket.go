@@ -10,8 +10,8 @@ func modifyTicket(c pb.TicketBookingClient) {
 	log.Println("-------Modify ticket started-------")
 	r, err := c.ModifySeat(context.Background(), &pb.ModifySeatRequest{
 		CurrTicketId: 1,
-		NewSeatNum: 2,
-		NewSection: "B",
+		NewSeatNum: 1,
+		NewSection: "A",
 		UserId: 1,      
 	})
 	if err != nil {

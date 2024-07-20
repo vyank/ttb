@@ -13,6 +13,7 @@ import (
 const bufSize = 1024 * 1024
 var lis *bufconn.Listener
 func init() {
+	log.Println("IN SERVER_TEST")
 	userIdInc = 0
 	trains = []Train{
 		{ID: 1, from: "London", to: "Paris", price: 20},
@@ -40,5 +41,6 @@ func init() {
 }
 
 func bufDialer(context.Context, string) (net.Conn, error) {
+	log.Println("IN SERVER_TEST")
 	return lis.Dial()
 }

@@ -13,6 +13,7 @@ func purchaseTicket(c pb.TicketBookingClient) {
 		To: "Paris", 
 		UserId: 1,
 		Price: 20,
+		DiscoutCode: "D1",
 	})
 	if err != nil {
 		log.Fatalf("Could not Purchase ticket: %v\n", err)
